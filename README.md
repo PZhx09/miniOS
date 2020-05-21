@@ -70,7 +70,7 @@ log: bochs.txt |
 
 在终端中输入c，让bochs虚拟机继续运行，如下图所示(因为此时还没有写入引导程序，所以会引发panic)：
 
-![](RackMultipart20200521-4-xpdhab_html_198d27032e6a972c.png)
+
 
 ## 其他
 
