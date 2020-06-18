@@ -48,7 +48,7 @@ SECTION MBR vstart=0x7C00
     mov cx,4                ;loader仅占一个扇区
     call rd_disk
 
-    jmp LOADER_BASE_ADDR
+    jmp LOADER_BASE_ADDR+0x20A
     
     rd_disk:
 

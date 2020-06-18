@@ -1,8 +1,19 @@
 编译汇编:
 nasm -o xx.bin xx.s
 
+编译C语言:   
+gcc -c -o main.o main.c    -c表示只进行编译、汇编  不进行链接
+
+链接:
+ld main.o -Ttext 0xc0001500 -e main -o kernel.bin
+
+
+
 写入硬盘
 dd if=xxx of=xxx bs=512 count conv=notrunc
+
+
+dd if=./loader.bin of=/home/pz/bochs/c.img bs=512 count=4 seek=2  conv=notrunc
 
 
 

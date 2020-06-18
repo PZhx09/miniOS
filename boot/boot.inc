@@ -1,7 +1,10 @@
 LOADER_BASE_ADDR equ 0x900   ;loader被加载内存位置
 LOADER_START_SECTOR equ 0x2   ;loader写入了硬盘的0盘0道2扇区
 
-
+PAGE_DIR_TABLE_POS equ 0x100000   ;页表被扔在了0x100000
+KERNEL_BIN_BASE_ADDR equ 0x70000      ;kernel被加载进的地方
+KERNEL_START_SECTOR equ 0x9           ;kernel的开始扇区
+KERNEL_ENTRY_POINT equ 0xc0001500     ;
 
 ;构造段描述符
 DESC_G_4K equ 1<<23  ;G设置1
@@ -38,3 +41,14 @@ RPL2  equ   10b
 RPL3  equ   11b
 TI_GDT	 equ   000b
 TI_LDT	 equ   100b
+
+;页表的字段
+PG_P  equ   1b
+PG_RW_R	 equ  00b ;可读不可写
+PG_RW_W	 equ  10b  ;可读可写
+PG_US_S	 equ  000b ;us为0表示系统页表
+PG_US_U	 equ  100b ;us为1表示用户程序
+
+
+;
+PT_NULL equ 0
