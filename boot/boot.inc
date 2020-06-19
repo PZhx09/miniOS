@@ -50,5 +50,5 @@ PG_US_S	 equ  000b ;us为0表示系统页表
 PG_US_U	 equ  100b ;us为1表示用户程序
 
 
-;
+;programmer type   elf处理
 PT_NULL equ 0
