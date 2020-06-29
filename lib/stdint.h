@@ -8,4 +8,6 @@ typedef unsigned char uint8_t;
 typedef unsigned short int uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long int uint64_t;
+typedef enum { false, true} bool;//C语言中没bool，想用的话自己的定义
+#define NULL 0
 #endif
