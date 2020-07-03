@@ -153,11 +153,8 @@ static void page_table_add(void* _vaddr, void* _page_phyaddr) {
         // 页目录项不存在,所以要先创建页目录再创建页表项.
 
         uint32_t pde_phyaddr = (uint32_t)palloc(&kernel_pool);//内核内存池中分配一页作为页表
-
         *pde = (pde_phyaddr | PG_US_U | PG_RW_W | PG_P_1);//页目录项指向页表
-
         memset((void*)((int)pte & 0xfffff000), 0, PG_SIZE);//分配的物理页要做页表，所以先清零
-         
         ASSERT(!(*pte & 0x00000001));
         *pte = (page_phyaddr | PG_US_U | PG_RW_W | PG_P_1);      // US=1,RW=1,P=1
     }

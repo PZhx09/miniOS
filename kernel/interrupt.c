@@ -80,9 +80,26 @@ static void general_intr_handler(uint8_t vec_nr) {
     if (vec_nr == 0x27 || vec_nr == 0x2f) {   //IRQ7和IRQ15会产生伪中断(spurious interrupt),无须处理。
         return;     
     }
-    put_str("int vector: 0x");
-    put_int(vec_nr);
-    put_char('\n');
+    //准备打印异常信息  VGA文本模式80*25
+    set_cursor(0);
+    int cursor_pos = 0;
+    while(cursor_pos < 320) {//清空一段区域
+        put_char(' ');
+        cursor_pos++;
+    }
+
+    set_cursor(0);    
+    put_str("!!!!!!!      excetion message begin  !!!!!!!!\n");
+    set_cursor(88); 
+    put_str(intr_name[vec_nr]);
+    if (vec_nr == 14) {    // 若为Pagefault,将缺失的地址打印出来并悬停
+        int page_fault_vaddr = 0; 
+        asm ("movl %%cr2, %0" : "=r" (page_fault_vaddr));   // cr2是存放造成page_fault的地址
+        put_str("\npage fault addr is ");put_int(page_fault_vaddr); 
+    }
+    put_str("\n!!!!!!!      excetion message end    !!!!!!!!\n");
+
+    while(1);//真正的死循环，因为中断处理程序肯定是关中断
 }
 
 //注册0-19 这些异常的中断处理函数 
@@ -166,7 +183,13 @@ enum intr_status intr_get_status() {
    	    return INTR_OFF;
 }
 
-/*完成有关中断的所有初始化工作*/
+//注册中断处理函数
+void register_handler(uint8_t vector_no, intr_handler function) {
+
+   idt_table[vector_no] = function; 
+}
+
+//完成有关中断的所有初始化工作
 void idt_init() {
     put_str("idt_init start\n");
     idt_desc_init();	   // 初始化中断描述符表

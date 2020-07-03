@@ -12,5 +12,6 @@ void init_all()
 	put_str("kernel init\n");
 	idt_init();  //中断模块初始化
 	timer_init();
+	thread_init(); 
 	mem_init();
 }
