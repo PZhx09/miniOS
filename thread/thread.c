@@ -106,7 +106,7 @@ void schedule() {
         cur->ticks = cur->priority;     //重置时间片
         cur->status = TASK_READY;
     } else { 
-        //因为获取不了资源等原因换下CPU
+        //因为获取不了资源等原因换下CPU  阻塞
     }
 
     ASSERT(!list_empty(&thread_ready_list));
@@ -115,7 +115,36 @@ void schedule() {
     thread_tag = list_pop(&thread_ready_list);   
     struct task_struct* next = elem2entry(struct task_struct, general_tag, thread_tag);
     next->status = TASK_RUNNING;
+    process_activate(next);//激活新进程/线程的页表
     switch_to(cur, next);
+}
+
+//当前线程阻塞自己
+void thread_block(enum task_status stat) {
+    ASSERT(((stat == TASK_BLOCKED) || (stat == TASK_WAITING) || (stat == TASK_HANGING)));
+
+    //调度时关中断
+    enum intr_status old_status = intr_disable();
+    struct task_struct* cur_thread = running_thread();
+    cur_thread->status = stat; 
+    schedule();           
+    //又被调度上了CPU，继续运行
+    intr_set_status(old_status);
+}
+
+//使pthread线程解除阻塞状态
+void thread_unblock(struct task_struct* pthread) {
+    enum intr_status old_status = intr_disable();
+    ASSERT(((pthread->status == TASK_BLOCKED) || (pthread->status == TASK_WAITING) || (pthread->status == TASK_HANGING)));
+    if (pthread->status != TASK_READY) {
+        ASSERT(!elem_find(&thread_ready_list, &pthread->general_tag));
+        if (elem_find(&thread_ready_list, &pthread->general_tag)) {
+            PANIC("thread_unblock: blocked thread in ready_list\n");
+        }
+        list_push(&thread_ready_list, &pthread->general_tag);    // 放到队列的最前面,使其尽快得到调度
+        pthread->status = TASK_READY;
+    } 
+    intr_set_status(old_status);
 }
 
 //初始化线程环境(其实就是初始化两个双向链表，和为main构造线程)

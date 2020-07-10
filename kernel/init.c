@@ -3,6 +3,10 @@
 #include "interrupt.h"
 #include "timer.h"
 #include "memory.h"
+#include "console.h"
+#include "keyboard.h"
+#include "tss.h"
+#include "thread.h"
 //编译的时候用-I指定头文件的路径，就不需要相对路径
 
 
@@ -14,4 +18,7 @@ void init_all()
 	timer_init();
 	thread_init(); 
 	mem_init();
+	console_init();
+	keyboard_init();
+	tss_init();       
 }

@@ -9,7 +9,7 @@
 #define PIC_S_CTRL 0xa0	       // 从片控制端口0xa0
 #define PIC_S_DATA 0xa1	       // 从片数据端口0xa1
 
-#define IDT_DESC_CNT 0x21	 // 目前总共支持的中断数   0-0x20
+#define IDT_DESC_CNT 0x30	 // 目前总共支持的中断数   0-0x20
 
 #define EFLAGS_IF   1<<9       // eflags寄存器中的if位
 #define GET_EFLAGS(EFLAG_VAR) asm volatile("pushfl; popl %0" : "=g" (EFLAG_VAR)) //把eflag压入栈，再弹出到EFLAG_VAR变量
@@ -50,6 +50,7 @@ static void pic_init(void) {
     outb (PIC_S_DATA, 0x01);	// 同上
 
    
+    //outb (PIC_M_DATA, 0xfd);//测试键盘
     outb (PIC_M_DATA, 0xfe);//主片只不屏蔽IR0  也就是时钟中断
     outb (PIC_S_DATA, 0xff);//屏蔽从片所有中断
 
