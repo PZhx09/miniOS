@@ -1,9 +1,9 @@
 
-#miniOS
+# miniOS
 
 参考Linux制作的一个简易OS内核。
 
-##miniOS目前包含的部分
+## miniOS目前包含的部分
 
 
 * MBR
@@ -21,7 +21,7 @@
 * shell界面
 
 
-##环境配置
+## 环境配置
 预装依赖
 ```javascript
 sudo apt-get install build-essential nasm
@@ -34,23 +34,23 @@ bochs配置文件
 megs: 32
 
 #BIOS和VGABIOS的路径
-    vgaromimage: file=/home/user/bochs/share/bochs/VGABIOS-lgpl-latest  
-    romimage: file=/home/user/bochs/share/bochs/BIOS-bochs-latest 
+    vgaromimage: file=/home/pz/bochs/share/bochs/VGABIOS-lgpl-latest  
+    romimage: file=/home/pz/bochs/share/bochs/BIOS-bochs-latest 
 
 #鼠标键盘
     mouse: enabled=0
-    keyboard: keymap=/home/user/bochs/share/bochs/keymaps/x11-pc-us.map
+    keyboard: keymap=/home/pz/bochs/share/bochs/keymaps/x11-pc-us.map
 
 #硬盘信息
     boot: disk
     ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
-    ata0-master: type=disk, path="/home/user/bochs/hd60M.img",mode=flat
+    ata0-master: type=disk, path="/home/pz/bochs/c.img",mode=flat
 
     log: bochs.txt
 ```
 
 
-##参考书目
+## 参考书目
 * 《Linux内核设计的艺术》
 * 《深入理解Linux内核》
 * 《x86汇编从实模式到保护模式》
